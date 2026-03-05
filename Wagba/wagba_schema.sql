@@ -68,7 +68,7 @@ create table `Order` (
     ord_floor varchar(20),
     ord_gps_coord varchar(100),
     is_donation boolean default false,
-    status enum('pending','preparing','delivering','completed','delivered', 'cancelled') default 'pending',
+    status enum('pending', 'accepted', 'preparing','completed','out_for_delivery','delivered','cancelled') default 'pending',
     scheduled_delivery_time datetime null,
     ordered_at datetime default current_timestamp,
     total_price decimal(10,2) not null check(total_price > 0),
@@ -172,7 +172,7 @@ create table Payment (
     payment_id int primary key auto_increment,
     order_id int not null unique,
     payment_type enum('cash','card','wallet') not null,
-    status enum('pending','completed','failed') default 'pending',
+    status enum('pending','completed','failed', 'refunded') default 'pending',
     amount decimal(10,2) not null check (amount > 0),
     foreign key (order_id) references `Order`(order_id) on delete cascade
 );
